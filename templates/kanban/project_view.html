@@ -61,16 +61,39 @@
 					<div class="task">
 						<div class="task-header">
 							<h2>{{ task.title }}</h2>
-							<form action="{% url 'kanban:change_status' task.id %}" method='post' class='task-form'>
-								{% csrf_token %}
-								{{ status_form.status }}
-							</form>
+							{% if task.stage_of_execution %}
+								<div class="chip">{{ task.stage_of_execution.title }}</div>
+							{% endif %}
 						</div>
+						{% if task.discussion %}
+							<span>Обсждается: {{ task.discussion.data }}</span>
+						{% endif %}
+						{% if request.user in task.executors.all %}
+							<div class='task-forms'>
+								<form action="{% url 'kanban:change_status' task.id %}" method='post' class='task-form'>
+									{% csrf_token %}
+									{{ status_form.status }}
+								</form>
+								<form action="{% url 'kanban:set_stage_of_execution' task.project.id task.id %}" method="post" class="task-form">
+									{% csrf_token %}
+									{{ stage_form.stage_of_execution }}
+								</form>
+							</div>
+						{% else %}
+							<a href="{% url 'kanban:add_executor' task.id %}" class='btn success'>Принять</a>
+						{% endif %}
 						<div>
 							{{ task.description }}
 						</div>
-						<div>
-							<a href='#' class='task-user'>{{ task.user.username }}</a>
+						<div class='task-creator'>
+							<span>Создано:</span>
+							<a href="{% url 'kanban:user_tasks' task.project.id task.user.id %}" class='task-user'>{{ task.user.username }}</a>
+						</div>
+						<div class='task-executors'>
+							<span>Исполнитель:</span>
+							{% for executor in task.executors.all %}
+								<a href="{% url 'kanban:task_executor' task.project.id executor.id %}" class="task-user">{{ executor.username }}</a>
+							{% endfor %}
 						</div>
 					</div>
 				{% endif %}
@@ -85,16 +108,39 @@
 					<div class="task">
 						<div class="task-header">
 							<h2>{{ task.title }}</h2>
-							<form action="{% url 'kanban:change_status' task.id %}" method='post' class='task-form'>
-								{% csrf_token %}
-								{{ status_form.status }}
-							</form>
+							{% if task.stage_of_execution %}
+								<div class="chip">{{ task.stage_of_execution.title }}</div>
+							{% endif %}
 						</div>
+						{% if task.discussion %}
+							<span>Обсждается: {{ task.discussion.data }}</span>
+						{% endif %}
+						{% if request.user in task.executors.all %}
+							<div class='task-forms'>
+								<form action="{% url 'kanban:change_status' task.id %}" method='post' class='task-form'>
+									{% csrf_token %}
+									{{ status_form.status }}
+								</form>
+								<form action="{% url 'kanban:set_stage_of_execution' task.project.id task.id %}" method="post" class="task-form">
+									{% csrf_token %}
+									{{ stage_form.stage_of_execution }}
+								</form>
+							</div>
+						{% else %}
+							<a href="{% url 'kanban:add_executor' task.id %}" class='btn success'>Принять</a>
+						{% endif %}
 						<div>
 							{{ task.description }}
 						</div>
-						<div>
-							<a href='#' class='task-user'>{{ task.user.username }}</a>
+						<div class='task-creator'>
+							<span>Создано:</span>
+							<a href="{% url 'kanban:user_tasks' task.project.id task.user.id %}" class='task-user'>{{ task.user.username }}</a>
+						</div>
+						<div class='task-executors'>
+							<span>Исполнитель:</span>
+							{% for executor in task.executors.all %}
+								<a href="{% url 'kanban:task_executor' task.project.id executor.id %}" class="task-user">{{ executor.username }}</a>
+							{% endfor %}
 						</div>
 					</div>
 				{% endif %}
