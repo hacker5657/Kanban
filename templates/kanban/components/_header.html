@@ -1,0 +1,12 @@
+<header class="header">
+	<h1 class='header-logo'>Kanban</h1>
+	<div class="links">
+		<a href="{% url 'kanban:index' %}" class="link">Все проекты</a>
+		{% if 'project/' in request.path %}
+			<a href="{% url 'kanban:view_project' project.id %}" class="link">Проект: {{ project.title }}</a>
+		{% endif %}
+		<a href="{% url 'kanban:create_project' %}" class="link">Создать проект</a>
+		<a href="{% url 'kanban:create_task' %}" class="link">Создать заявку</a>
+	</div>
+	<a href="{% url 'users:logout' %}" class='link'>Выйти</a>
+</header>

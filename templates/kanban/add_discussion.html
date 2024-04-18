@@ -1,0 +1,15 @@
+{% extends 'kanban/layouts/main.html' %}
+{% load static %}
+{% block header %}
+	<link rel="stylesheet" href="{% static 'css/create_form.css' %}">
+{% endblock %}
+{% block content %}
+	<div class="main">
+		<form action="{% url 'kanban:add_discussion' project_id task_id %}" method="post" class="form">
+			<h1>Добавить обсуждение</h1>
+			{% csrf_token %}
+			{{ form.data }}
+			<button class='form-button' type="submit">Добавить</button>
+		</form>
+	</div>
+{% endblock %}

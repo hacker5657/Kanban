@@ -1,0 +1,18 @@
+{% extends 'kanban/layouts/main.html' %}
+{% load static %}
+{% block header %}
+	<link rel="stylesheet" href="{% static 'css/create_form.css' %}">
+{% endblock %}
+{% block content %}
+	<div class="main">
+		<form action="{% url 'kanban:create_task' %}" method="post" class="form">
+			<h1>Создание заявки</h1>
+			{% csrf_token %}
+			{{ form.title }}
+			{{ form.description }}
+			{{ form.project }}
+			{{ form.status }}
+			<button type="submit" class='form-button'>Создать</button>
+		</form>
+	</div>
+{% endblock %}
